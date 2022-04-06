@@ -1,0 +1,40 @@
+<h1>Mars Rover technical Challenge <small>(<a href="/positions">Restart</a>)</small></h1>
+<h2>MARS ROVERS</h2>
+
+<table>
+  <tr>
+    <th align="center">X-Coord</th>
+    <th align="center">Y-Coord</th>
+    <th align="center">Direction</th>
+  </tr>
+
+<% @positions.each do |position| %>
+  <tr>
+    <td align="center"><%=h position.point_x %></td>
+    <td align="center"><%=h position.point_y %></td>
+    <td align="center"><%=h position.direction %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= form_with(model: Position.new) do |form| %>
+  <div class="notice">
+    <%= notice %>
+  </div>
+  <div class="form-group">
+      <%= form.label :x,'X-Coord' %>
+      <%= form.number_field :x, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+      <%= form.label :y,'Y-Coord' %>
+      <%= form.number_field :y, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+      <%= form.label :direction,'Direction (N S W E) or Position letters (L R M)' %>
+      <%= form.text_field :direction, class: 'form-control' %>
+  </div>
+
+    <div class="form-group">
+        <%= form.submit 'Submit', class: 'btn btn-primary' %>
+    </div>
+    <% end %>
