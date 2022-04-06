@@ -14,7 +14,7 @@ class PositionsController < ApplicationController
     
 
     def index
-      Position.all()
+      Position.destroy_all
     end
 
     def create
@@ -36,6 +36,7 @@ class PositionsController < ApplicationController
           last_position()
           @temp_command = ''
           @final = 1
+          @negative_bounds = 0
           params[:position][:direction].split(//) do | i|
             if(@@valid_commands.index(i))
               @temp_command = @temp_command.to_s + i
@@ -49,8 +50,12 @@ class PositionsController < ApplicationController
             
             
             if (Position.last)
-              new_position()
-              redirect_to position_path('process'), notice: 'Successful spined or moved'
+              if(@negative_bounds == 1)
+                redirect_to position_path('process'), notice: 'Negative bounds'
+              else
+                new_position()
+                redirect_to position_path('process'), notice: 'Successful spined or moved'
+              end
             else
               redirect_to position_path('process'), notice: 'Must atleast have starting position'
             end
@@ -76,6 +81,9 @@ class PositionsController < ApplicationController
       @ptY = @ptY - 1
     elsif (@direction == @@west_direction)
       @ptX = @ptX - 1
+    end
+    if (@ptX.to_i < 0 || @ptY.to_i < 0)
+      @negative_bounds = 1
     end
   end
   
